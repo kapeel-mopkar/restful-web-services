@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 import com.kaps.learning.rest.webservices.restfulwebservices.user.exception.UserAlreadyExistsException;
+import com.kaps.learning.rest.webservices.restfulwebservices.user.exception.UserNotFoundException;
+import com.kaps.learning.rest.webservices.restfulwebservices.user.exception.UserPostNotFoundException;
 
 @Component
 public class UserDaoService {
@@ -47,7 +49,7 @@ public class UserDaoService {
 		if (firstMatch != null && firstMatch.isPresent()) {
 			return firstMatch.get();
 		}
-		return null;
+		throw new UserNotFoundException("USER_NOT_FOUND - "+id);
 	}
 
 	public void removeUser(int id) {
@@ -72,5 +74,20 @@ public class UserDaoService {
 			firstMatch.get().addPost(post);
 		}
 		return post;
+	}
+	
+	public Post findUserPost(int userId, int postId) {
+		Optional<User> firstMatch = users.stream().filter(user -> user.getId().equals(userId)).findAny();
+		if (firstMatch != null && firstMatch.isPresent()) {
+			User user = firstMatch.get();
+			List<Post> userPosts = user.getPosts();
+			if(userPosts != null && !userPosts.isEmpty()) {
+				Optional<Post> findFirstPost = userPosts.stream().filter(post -> post.getId().equals(postId)).findFirst();
+				if (findFirstPost != null && findFirstPost.isPresent()) {
+					return findFirstPost.get();
+				}
+			}
+		}
+		throw new UserPostNotFoundException("USER_POST_NOT_FOUND - "+postId);
 	}
 }

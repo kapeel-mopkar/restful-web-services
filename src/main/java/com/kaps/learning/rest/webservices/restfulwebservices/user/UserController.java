@@ -16,7 +16,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.kaps.learning.rest.webservices.restfulwebservices.user.exception.DuplicateUserPostException;
 import com.kaps.learning.rest.webservices.restfulwebservices.user.exception.UserAlreadyExistsException;
-import com.kaps.learning.rest.webservices.restfulwebservices.user.exception.UserNotFoundException;
 
 @RestController
 public class UserController {
@@ -31,11 +30,7 @@ public class UserController {
 	
 	@GetMapping(path = "/users/{userId}")
 	public User retrieveUser(@PathVariable String userId){
-		User findOne = userDaoService.findOne(Integer.valueOf(userId));
-		if(findOne == null) {
-			throw new UserNotFoundException("USER_NOT_FOUND - "+userId);
-		}
-		return findOne;
+		return userDaoService.findOne(Integer.valueOf(userId));
 	}
 	
 	@PostMapping(path = "/users")
@@ -72,6 +67,11 @@ public class UserController {
 		} catch(DuplicateUserPostException dupe) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
+	}
+	
+	@GetMapping(path = "/users/{userId}/posts/{postId}")
+	public Post getUserPostById(@PathVariable String userId, @PathVariable String postId){
+		return userDaoService.findUserPost(Integer.valueOf(userId), Integer.valueOf(postId));
 	}
 
 }

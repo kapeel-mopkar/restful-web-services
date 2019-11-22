@@ -5,7 +5,7 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class Post {
-	private int id;
+	private Integer id;
 	private String title;
 	private String description;
 	private Date postedDate;
@@ -14,7 +14,7 @@ public class Post {
 	
 	protected Post() {}
 	
-	public Post(int id, String title, String description) {
+	public Post(Integer id, String title, String description) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -22,11 +22,11 @@ public class Post {
 		this.postedDate = new Date();
 	}
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 	
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
