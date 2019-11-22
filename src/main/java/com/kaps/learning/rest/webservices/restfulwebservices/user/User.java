@@ -5,12 +5,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
+
 import com.kaps.learning.rest.webservices.restfulwebservices.user.exception.DuplicateUserPostException;
 
 public class User {
 	
 	private Integer id;
+	@Size(min = 2, message = "Name should have at least 2 characters")
 	private String name;
+	@Past(message = "Enter valid birthDate")
 	private Date birthDate;
 	private List<Post> posts;
 	
