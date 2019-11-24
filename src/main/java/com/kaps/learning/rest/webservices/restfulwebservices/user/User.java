@@ -10,12 +10,18 @@ import javax.validation.constraints.Size;
 
 import com.kaps.learning.rest.webservices.restfulwebservices.user.exception.DuplicateUserPostException;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(description = "All details about User resource")
 public class User {
 	
 	private Integer id;
 	@Size(min = 2, message = "Name should have at least 2 characters")
+	@ApiModelProperty(notes = "Name should have at least 2 characters")
 	private String name;
 	@Past(message = "Enter valid birthDate")
+	@ApiModelProperty(notes = "Birthdate should be in past")
 	private Date birthDate;
 	private List<Post> posts;
 	
