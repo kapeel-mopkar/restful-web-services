@@ -5,14 +5,22 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
 import com.kaps.learning.rest.webservices.restfulwebservices.user.exception.DuplicateUserPostException;
 
-//@ApiModel(description = "All details about User resource")
+@Entity
 public class User {
 	
+	@Id
+	@GeneratedValue
 	private Integer id;
 	@Size(min = 2, message = "Name should have at least 2 characters")
 	//@ApiModelProperty(notes = "Name should have at least 2 characters")
@@ -20,6 +28,10 @@ public class User {
 	@Past(message = "Enter valid birthDate")
 	//@ApiModelProperty(notes = "Birthdate should be in past")
 	private Date birthDate;
+	
+	@OneToMany(cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            mappedBy = "author")
 	private List<Post> posts;
 	
 	protected User() {}

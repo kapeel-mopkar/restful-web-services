@@ -2,13 +2,30 @@ package com.kaps.learning.rest.webservices.restfulwebservices.user;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+@Entity
 public class Post {
+	@Id
+	@GeneratedValue
 	private Integer id;
 	private String title;
 	private String description;
 	private Date postedDate;
+	
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
 	@JsonIgnore // in order to avoid cyclic reference to user -> posts -> user
 	private User author;
 	
